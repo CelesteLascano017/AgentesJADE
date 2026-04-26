@@ -16,12 +16,14 @@ public class contenedor {
 
             System.out.println("Contenedor iniciado");
 
+            AgentController ag2 = container.createNewAgent("Agente2", "Ag2", null);
+            ag2.start();
+
             AgentController ag1 = container.createNewAgent("Agente1", "Ag1", null);
             ag1.start();
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-} 
+}
