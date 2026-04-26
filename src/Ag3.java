@@ -14,7 +14,17 @@ public class Ag3 extends Agent {
                 ACLMessage msg = receive();
 
                 if (msg != null) {
-                    System.out.println("Ag3 recibió: " + msg.getContent());
+
+                    System.out.println("Ag3 received: " + msg.getContent());
+
+                    //Respuesta
+                    ACLMessage reply = msg.createReply();
+                    reply.setContent("Respuesta desde Ag3");
+
+                    //Enviar respuesta
+                    send(reply);
+                    System.out.println("Ag3 respondió a Ag2");
+
                 } else {
                     block();
                 }

@@ -12,27 +12,33 @@ public class Ag2 extends Agent {
         addBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
+
                 ACLMessage msg = receive();
 
                 if (msg != null) {
-                    // 1. Mostrar mensaje recibido
-                    System.out.println("Ag2 recibió: " + msg.getContent());
 
-                    // 2. Crear nuevo mensaje
-                    ACLMessage nuevo = new ACLMessage(ACLMessage.INFORM);
+                    String sender = msg.getSender().getLocalName();
 
-                    // 3. Agregar receptores
-                    nuevo.addReceiver(new AID("Agente3", AID.ISLOCALNAME));
-                    nuevo.addReceiver(new AID("Agente4", AID.ISLOCALNAME));
-                    nuevo.addReceiver(new AID("Agente5", AID.ISLOCALNAME));
+                    System.out.println("Ag2 recibió de " + sender + ": " + msg.getContent());
 
-                    // 4. Contenido del mensaje
-                    nuevo.setContent("Mensaje reenviado por Ag2");
+                    // Solo reenvía si viene de Ag1
+                    if (sender.equals("Agente1")) {
 
-                    // 5. Enviar mensaje
-                    send(nuevo);
+                        ACLMessage nuevo = new ACLMessage(ACLMessage.INFORM);
 
-                    System.out.println("Ag2 reenvió mensaje a Ag3, Ag4 y Ag5");
+                        nuevo.addReceiver(new AID("Agente3", AID.ISLOCALNAME));
+                        nuevo.addReceiver(new AID("Agente4", AID.ISLOCALNAME));
+                        nuevo.addReceiver(new AID("Agente5", AID.ISLOCALNAME));
+
+                        nuevo.setContent("Mensaje reenviado por Ag2");
+
+                        send(nuevo);
+
+                        System.out.println("Ag2 reenvió mensaje a Ag3, Ag4 y Ag5");
+
+                    } else {
+                        System.out.println("Ag2 recibió respuesta, no reenvía");
+                    }
 
                 } else {
                     block();
